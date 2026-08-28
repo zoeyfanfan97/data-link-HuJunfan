@@ -1,0 +1,7 @@
+﻿record_no,target_id,stage,field,problem_type,value,description
+4,780bad,sender_encode,both time_position and last_contact are null,REQUIRED_FIELD_MISSING,"['780bad', 'BADTIME', 'China', None, None, 116.4074, 39.9042, 10000.0, False, 240.0, 90.0, 0.0, None, None, '1234', False, 0]",REQUIRED_FIELD_MISSING: both time_position and last_contact are null
+5,780bee,sender_encode,heading,OUT_OF_RANGE,"['780bee', 'BADHEAD', 'China', 1710000120, 1710000120, 114.0579, 22.5431, 9000.0, False, 220.0, 360.0, 0.0, None, None, '1234', False, 0]","OUT_OF_RANGE: heading 360.0 out of range [0, 360)"
+901,780abc,receiver_decode,checksum,CHECKSUM_ERROR,"received=2934, expected=2678",人工构造校验和不匹配测试帧
+902,780abc,receiver_decode,magic,MAGIC_ERROR,0x0053,人工构造非法魔数测试帧
+903,780abc,receiver_decode,latitude_code,RESERVED_BITS_ERROR,bit23_set,人工构造纬度最高保留位置1测试帧
+904,780abc,receiver_decode,lat,FLAG_VALUE_INCONSISTENCY,"valid_flag=0, code=2824872",人工构造标志位为0但占位码非0测试帧

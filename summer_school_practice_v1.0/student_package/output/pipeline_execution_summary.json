@@ -1,0 +1,23 @@
+{
+  "status": "SUCCESS",
+  "m2_protocol": {
+    "encoded_count": 3,
+    "decoded_count": 3,
+    "validation_count": 6,
+    "roundtrip_count": 21
+  },
+  "m3_tracks": {
+    "decoded_count": 9,
+    "track_points": 9,
+    "situation_targets": 3
+  },
+  "m4_mapping": {
+    "verified_rules_count": 30,
+    "unified_objects_count": 6
+  },
+  "m5_quality": {
+    "case_count": 6,
+    "alert_count": 5,
+    "quality_rows": 6
+  }
+}

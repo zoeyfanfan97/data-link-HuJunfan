@@ -1,0 +1,6 @@
+﻿alert_time,target_id,alert_type,severity,field,description
+1710000120,780def,POSITION_MISSING,HIGH,lat,位置字段缺失：lat 为空
+1710000120,000001,DATA_DELAYED,MEDIUM,timestamp,数据延迟 120 秒，超过 60 秒阈值
+1710000120,780aaa,DUPLICATE_RECORD,MEDIUM,target_id+timestamp,发现重复记录：目标 780aaa 在时间戳 1710000100 出现 2 次
+1710000120,780aaa,DUPLICATE_RECORD,MEDIUM,target_id+timestamp,发现重复记录：目标 780aaa 在时间戳 1710000100 出现 2 次
+1710000120,780bbb,HEADING_OUT_OF_RANGE,MEDIUM,heading,航向角 360.0° 越界，要求 0 <= heading < 360

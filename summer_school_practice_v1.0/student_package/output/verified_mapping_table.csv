@@ -1,0 +1,31 @@
+﻿source_format,input_field,unified_field,mapping_rule,unit_conversion,null_strategy,evidence,verified
+OpenSky,target_id,track_id,规范为6位小写十六进制字符串，保留前导0,无,必需字段；缺失时不可生成正常记录,opensky_field_dictionary.csv: 索引0 icao24,true
+OpenSky,latest_time,timestamp,直接映射为Unix时间戳秒整数,秒 (Unix second),必需字段；必须为正整数,source_field_definitions.md: latest_time 映射规则,true
+OpenSky,callsign,identity.callsign,去除首尾空格,无,缺失或空字符串映射为 null,source_field_definitions.md: identity.callsign,true
+OpenSky,lat,position.lat,直接映射浮点纬度,度 (°),缺失或超限映射为 null,source_field_definitions.md: position.lat,true
+OpenSky,lon,position.lon,直接映射浮点经度,度 (°),缺失或超限映射为 null,source_field_definitions.md: position.lon,true
+OpenSky,altitude,position.alt,直接映射高度,米 (m),缺失映射为 null,source_field_definitions.md: position.alt,true
+OpenSky,alt_type,position.alt_type,高度有效时映射 barometric/geometric，无效时 unknown,无,高度缺失时固定为 unknown,source_field_definitions.md: position.alt_type,true
+OpenSky,speed,motion.speed,直接映射地速,米/秒 (m/s),缺失映射为 null,source_field_definitions.md: motion.speed,true
+OpenSky,heading,motion.heading,直接映射航向且必须 0 <= heading < 360,度 (°),缺失或超限映射为 null,source_field_definitions.md: motion.heading,true
+OpenSky,vertical_rate,motion.vertical_rate,直接映射垂直速度,米/秒 (m/s),缺失映射为 null,source_field_definitions.md: motion.vertical_rate,true
+OpenSky,on_ground,status.on_ground,布尔值转换,无,必需布尔值,source_field_definitions.md: status.on_ground,true
+OpenSky,time_source,quality.time_source,映射为 position_time 或 last_contact_fallback,无,缺失默认 position_time,source_field_definitions.md: quality.time_source,true
+OpenSky,lat+lon,quality.position_valid,"经纬度非空且均在合法范围 [-90,90] 与 [-180,180] 内",无,任一为空或越界置 false,source_field_definitions.md: quality.position_valid,true
+OpenSky,latest_time,quality.time_valid,时间戳为正整数,无,时间回退不等于时间无效，正整数置 true,source_field_definitions.md: quality.time_valid,true
+OpenSky,message_valid,quality.message_valid,源记录校验结果,无,源记录有效置 true,source_field_definitions.md: quality.message_valid,true
+TeachingLink,target_id,track_id,24位整数转6位小写十六进制字符串，保留前导0,无,必需字段；保留前导0,teaching_message_spec.md: 偏移12-14 uint24,true
+TeachingLink,timestamp,timestamp,32位无符号整数直接映射,秒 (Unix second),必需字段；必须为正整数,teaching_message_spec.md: 偏移8-11 uint32,true
+TeachingLink,callsign+validity_flags.bit6,identity.callsign,bit6有效时读取并去除补0；无效时为 null,无,bit6=0或占位全0时映射为 null,teaching_message_spec.md: 偏移15-22 ASCII/8,true
+TeachingLink,latitude_code+validity_flags.bit0,position.lat,bit0有效时按 code/(2^22-1)*180-90 恢复；无效时 null,度 (°),bit0=0时映射为 null,teaching_message_spec.md: 偏移23-25 定点量化,true
+TeachingLink,longitude_code+validity_flags.bit1,position.lon,bit1有效时按 code/(2^22-1)*360-180 恢复；无效时 null,度 (°),bit1=0时映射为 null,teaching_message_spec.md: 偏移26-28 定点量化,true
+TeachingLink,altitude_code+validity_flags.bit2,position.alt,bit2有效时按 code-1000 恢复；无效时 null,米 (m),bit2=0时映射为 null,teaching_message_spec.md: 偏移29-30 偏置1000m,true
+TeachingLink,status_flags.bit1+validity_flags.bit2,position.alt_type,高度有效时 bit1=1 为 geometric、0 为 barometric；无效时 unknown,无,高度缺失时固定为 unknown,teaching_message_spec.md: status_flags.bit1,true
+TeachingLink,speed_code+validity_flags.bit3,motion.speed,bit3有效时按 code*0.1 恢复；无效时 null,米/秒 (m/s),bit3=0时映射为 null,teaching_message_spec.md: 偏移31-32 分辨率0.1m/s,true
+TeachingLink,heading_code+validity_flags.bit4,motion.heading,bit4有效时按 code*0.01 恢复且 < 360；无效时 null,度 (°),bit4=0时映射为 null,teaching_message_spec.md: 偏移33-34 分辨率0.01°,true
+TeachingLink,vertical_rate_code+validity_flags.bit5,motion.vertical_rate,bit5有效时按 code*0.01-327.68 恢复；无效时 null,米/秒 (m/s),bit5=0时映射为 null,teaching_message_spec.md: 偏移35-36 偏置327.68m/s,true
+TeachingLink,status_flags.bit0,status.on_ground,bit0=1 为 True、0 为 False,无,必需布尔值,teaching_message_spec.md: status_flags.bit0,true
+TeachingLink,status_flags.bit2,quality.time_source,bit2=1 映射为 last_contact_fallback、0 为 position_time,无,时间回退不代表时间无效,teaching_message_spec.md: status_flags.bit2,true
+TeachingLink,lat_valid+lon_valid,quality.position_valid,经纬有效位均为1且解码值在合法范围内,无,任一无效置 false,source_field_definitions.md: quality.position_valid,true
+TeachingLink,timestamp,quality.time_valid,时间戳为正整数且帧时间未丢失,无,正整数置 true,source_field_definitions.md: quality.time_valid,true
+TeachingLink,message_valid,quality.message_valid,完整帧接收判据校验通过,无,完整帧通过置 true,teaching_message_spec.md: 接收判据,true
